@@ -1,10 +1,10 @@
 # krisinfo-card
-A Lovelace custom card for custom component Krisinformation in Home Assistant
-https://github.com/isabellaalstrom/sensor.krisinformation
+A Lovelace custom card for [custom component Krisinformation](https://github.com/isabellaalstrom/sensor.krisinformation) in Home Assistant.
+The red alert icon will appear only if the message is an alert.
 
 <img src="https://github.com/isabellaalstrom/krisinfo-card/blob/master/krisinfo.png" alt="Krisinformation Lovelace Card" />
 
-**Usage:**
+**Use in ui-lovelace.yaml:**
 ```yaml
   - type: custom:krisinfo-card
     entity: sensor.krisinformation
