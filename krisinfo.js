@@ -11,7 +11,6 @@ class KrisinfoCard extends HTMLElement {
       }
   
       const entity = hass.states[this.config.entity];
-      const state = entity.state;
       const messages = entity.attributes.messages;
       if(card != null) {
         card.header = entity.attributes.friendly_name;
@@ -47,7 +46,7 @@ class KrisinfoCard extends HTMLElement {
             ${messages.map(message => `
                 <div class="message">
                   <span>${message.SenderName}</span>
-                  </br><span>Published: ${message.Published}</span>
+                  </br><span>Skickat: ${message.Published}</span>
                   
   
                   
