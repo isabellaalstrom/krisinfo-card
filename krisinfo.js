@@ -47,9 +47,6 @@ class KrisinfoCard extends HTMLElement {
                 <div class="message">
                   <span>${message.SenderName}</span>
                   </br><span>Skickat: ${message.Published}</span>
-                  
-  
-                  
                   <h3>${message.Event == "Alert" ? `<ha-icon id="state-icon" icon="mdi:alert"></ha-icon>` : ''}${message.Headline}</h3>
                   <p class="">${message.Message}</p>
                   <a target="_blank" href="${message.Web}">Läs mer</a>
