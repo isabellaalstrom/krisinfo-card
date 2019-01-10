@@ -16,3 +16,7 @@ The red alert icon will appear only if the message is an alert.
 | ---- | ---- | ------- | -----------
 | type | string | **Required** | `custom:krisinfo-card`
 | entity | string | **Required** | The entity id of your Krisinformation sensor
+
+
+
+Thanks to @arsaboo for inspiration to this card from [Animated weather card](https://community.home-assistant.io/t/custom-animated-weather-card-for-lovelace/58338).
