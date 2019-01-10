@@ -19,4 +19,4 @@ The red alert icon will appear only if the message is an alert.
 
 
 
-Thanks to @arsaboo for inspiration to this card from [Animated weather card](https://community.home-assistant.io/t/custom-animated-weather-card-for-lovelace/58338).
+Thanks to [@arsaboo](https://github.com/arsaboo) for inspiration to this card from [Animated weather card](https://community.home-assistant.io/t/custom-animated-weather-card-for-lovelace/58338).
