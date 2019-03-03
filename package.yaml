@@ -1,4 +1,4 @@
-name: Emergency alerts from .krisinformation.se
+name: Emergency alerts from krisinformation.se
 description: A custom lovelace card to accompany the custom component for emergency information from Swedish authorities
 type: lovelace
 keywords:
