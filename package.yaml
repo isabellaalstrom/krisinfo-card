@@ -1,0 +1,17 @@
+name: Emergency alerts from krisinformation.se
+description: A custom lovelace card to accompany the custom component for emergency information from Swedish authorities
+type: lovelace
+keywords:
+  - krisinformation.de
+  - sweden
+  - swedish
+  - emergency
+  - krisis
+  - crisis
+author:
+  name: Isabella Gross Alström
+  email: isabella.alstrom@gmail.com
+  homepage: https://isabellaalstrom.github.io/
+license: MIT
+files:
+  - krisinfo-card.js
