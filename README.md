@@ -4,21 +4,21 @@ The red alert icon will appear only if the message is an alert.
 
 <img src="https://github.com/isabellaalstrom/krisinfo-card/blob/master/krisinfo.png" alt="Krisinformation Lovelace Card" />
 
+## -- Breaking change in v.1.0.0 - now uses card tools, see below --
+
 ## Installation
+This card requires [card-tools](https://github.com/thomasloven/lovelace-card-tools) to be installed.
 
-1. Copy `krisinfo-card.js` to `<config directory>/www/krisinfo-card.js`
-2. Add `krisinfo-card` as a resource in `ui-lovelace.yaml` or in raw config editor if you don't use yaml mode.
-
-```yaml
-resources:
-  - url: /local/krisinfo-card.js
-    type: js
-```
+For installation instructions [see this guide](https://github.com/thomasloven/hass-config/wiki/Lovelace-Plugins).
 
 
 ## Example configuration
 
 ```yaml
+title: My awesome Lovelace!
+resources:
+  - url: /local/krisinfo-card.js
+    type: js
 views:
   title: My view
   cards:
