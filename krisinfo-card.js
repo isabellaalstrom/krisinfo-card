@@ -14,22 +14,61 @@ class KrisinfoCard extends cardTools.LitElement {
     return cardTools.LitHtml
     `
       ${this._renderStyle()}
-      <ha-card>
-        <div class="header">
-          <div class="name">
-            ${this.header}
+      ${this.config.only_alerts == false || this.config.only_alerts == null
+        ? cardTools.LitHtml
+        `<ha-card>
+          <div class="header">
+            <div class="name">
+              ${this.header}
+            </div>
           </div>
-        </div>
-      ${this.messages.length == 0 ? cardTools.LitHtml`<p>Inga meddelanden just nu</p>` : 
-          cardTools.LitHtml(this.messages.map(message => `
-              <div class="message">
-                <span>${message.SenderName}</span>
-                  </br><span>Skickat: ${message.Published}</span>
-                  <h3>${message.Event == "Alert" ? cardTools.LitHtml`<ha-icon id="state-icon" icon="mdi:alert"></ha-icon>` : ''}${message.Headline}</h3>
-                <p class="">${message.Message}</p>
-                <a target="_blank" href="${message.Web}">Läs mer</a>
-              </div>`))}
-      </ha-card>
+          ${this.messages.length == 0
+            ? cardTools.LitHtml`<p>Inga meddelanden just nu</p>`
+            : this.messages.map(message => 
+              cardTools.LitHtml`<div class="message">
+                      <span>${message.SenderName}</span>
+                        </br><span>Skickat: ${message.Published}</span>
+                        <h3>${message.Event == "Alert" ? cardTools.LitHtml`<ha-icon id="state-icon" icon="mdi:alert"></ha-icon>` : ''}${message.Headline}</h3>
+                      <p class="">${message.Message}</p>
+                      <a target="_blank" href="${message.Web}">Läs mer</a>
+                    </div>
+              `)}
+          </ha-card>`
+        : // if only alerts
+        cardTools.LitHtml
+        `
+        ${this.state == "Alert" ?
+          cardTools.LitHtml
+          `
+            <ha-card>
+              <div class="header">
+                <div class="name">
+                  ${this.state} - ${this.header}
+                </div>
+              </div>
+              ${this.messages.length == 0
+                ? cardTools.LitHtml`<p>Inga meddelanden just nu</p>`
+                : this.messages.map(message => 
+                  cardTools.LitHtml`
+                  ${message.Event == "Alert" ?
+                    cardTools.LitHtml`<div class="message">
+                            <span>${message.SenderName}</span>
+                              </br><span>Skickat: ${message.Published}</span>
+                              <h3>${message.Event == "Alert" ? cardTools.LitHtml`<ha-icon id="state-icon" icon="mdi:alert"></ha-icon>` : ''}${message.Headline}</h3>
+                            <p class="">${message.Message}</p>
+                            <a target="_blank" href="${message.Web}">Läs mer</a>
+                          </div>
+                    `
+                  : ''}`
+                  )
+              
+                }
+            </ha-card>
+          `
+          : ''
+        }
+        `
+      }
     `;
   }    
 
@@ -80,6 +119,8 @@ class KrisinfoCard extends cardTools.LitElement {
     const entity = hass.states[this.config.entity];
     this.header = entity.attributes.friendly_name;
     this.messages = entity.attributes.messages;
+    this.state = entity.state
+    this.requestUpdate();
   }
 
 
