@@ -1,66 +1,129 @@
-class KrisinfoCard extends HTMLElement {
-  set hass(hass) {
-    
-    var card = null;
-    if (!this.content) {
-      card = document.createElement('ha-card');
-      this.content = document.createElement('div');
-      this.content.className = 'card';
-      card.appendChild(this.content);
-      this.appendChild(card);
-    }
-
-    const entity = hass.states[this.config.entity];
-    const messages = entity.attributes.messages;
-    if(card != null) {
-      card.header = entity.attributes.friendly_name;
-    }
-    
-    this.content.innerHTML = `
-      <style>
-        .message {
-          padding-bottom: 1em;
-        }
-        h3 {
-          margin-top: 10px;
-          margin-bottom: 0;
-        }
-        p {
-          margin-top: 7px;
-        }
-        .card {
-          padding: 1em;
-          padding-top: 0;
-        }
-        .state {
-          display: block;
-          margin: auto;
-          text-align: center;
-        }
-        #state-icon {
-          color: red;
-          padding-right: 7px;
-        }
-      </style>
-
-          ${messages.length == 0 ? "<p>Inga meddelanden just nu</p>" : 
-          messages.map(message => `
-              <div class="message">
-                <span>${message.SenderName}</span>
-                  </br><span>Skickat: ${message.Published}</span>
-                  <h3>${message.Event == "Alert" ? `<ha-icon id="state-icon" icon="mdi:alert"></ha-icon>` : ''}${message.Headline}</h3>
-                <p class="">${message.Message}</p>
-                <a target="_blank" href="${message.Web}">Läs mer</a>
-              </div>`).join('')}
-      </div>`;
-  }
-
+customElements.whenDefined('card-tools').then(() => {
+let cardTools = customElements.get('card-tools');
+  
+class KrisinfoCard extends cardTools.LitElement {
+  
   setConfig(config) {
     if (!config.entity) {
       throw new Error('Please define entity');
     }
     this.config = config;
   }
+  
+  render(){
+    return cardTools.LitHtml
+    `
+      ${this._renderStyle()}
+      ${this.config.only_alerts == false || this.config.only_alerts == null
+        ? cardTools.LitHtml
+        `<ha-card>
+          <div class="header">
+            <div class="name">
+              ${this.header}
+            </div>
+          </div>
+          ${this.messages.length == 0
+            ? cardTools.LitHtml`<p>Inga meddelanden just nu</p>`
+            : this.messages.map(message => 
+              cardTools.LitHtml`<div class="message">
+                      <span>${message.SenderName}</span>
+                        </br><span>Skickat: ${message.Published}</span>
+                        <h3>${message.Event == "Alert" ? cardTools.LitHtml`<ha-icon id="state-icon" icon="mdi:alert"></ha-icon>` : ''}${message.Headline}</h3>
+                      <p class="">${message.Message}</p>
+                      <a target="_blank" href="${message.Web}">Läs mer</a>
+                    </div>
+              `)}
+          </ha-card>`
+        : // if only alerts
+        cardTools.LitHtml
+        `
+        ${this.state == "Alert" ?
+          cardTools.LitHtml
+          `
+            <ha-card>
+              <div class="header">
+                <div class="name">
+                  ${this.state} - ${this.header}
+                </div>
+              </div>
+              ${this.messages.length == 0
+                ? cardTools.LitHtml`<p>Inga meddelanden just nu</p>`
+                : this.messages.map(message => 
+                  cardTools.LitHtml`
+                  ${message.Event == "Alert" ?
+                    cardTools.LitHtml`<div class="message">
+                            <span>${message.SenderName}</span>
+                              </br><span>Skickat: ${message.Published}</span>
+                              <h3>${message.Event == "Alert" ? cardTools.LitHtml`<ha-icon id="state-icon" icon="mdi:alert"></ha-icon>` : ''}${message.Headline}</h3>
+                            <p class="">${message.Message}</p>
+                            <a target="_blank" href="${message.Web}">Läs mer</a>
+                          </div>
+                    `
+                  : ''}`
+                  )
+              
+                }
+            </ha-card>
+          `
+          : ''
+        }
+        `
+      }
+    `;
+  }    
+
+  _renderStyle() {
+      return cardTools.LitHtml
+      `
+        <style>
+          ha-card {
+            padding: 16px;
+          }
+          .header {
+            padding: 0;
+            @apply --paper-font-headline;
+            line-height: 40px;
+            color: var(--primary-text-color);
+            padding: 4px 0 12px;
+          }
+          .message {
+            padding-bottom: 1em;
+          }
+          h3 {
+            margin-top: 10px;
+            margin-bottom: 0;
+          }
+          p {
+            margin-top: 7px;
+          }
+          .card {
+            padding: 1em;
+            padding-top: 0;
+          }
+          .state {
+            display: block;
+            margin: auto;
+            text-align: center;
+          }
+          #state-icon {
+            color: red;
+            padding-right: 7px;
+          }
+        </style>
+      `;
+    }
+  
+  set hass(hass) {
+    this._hass = hass;
+
+    const entity = hass.states[this.config.entity];
+    this.header = entity.attributes.friendly_name;
+    this.messages = entity.attributes.messages;
+    this.state = entity.state
+    this.requestUpdate();
+  }
+
+
 
   // @TODO: This requires more intelligent logic
   getCardSize() {
@@ -69,3 +132,11 @@ class KrisinfoCard extends HTMLElement {
 }
 
 customElements.define('krisinfo-card', KrisinfoCard);
+});
+
+window.setTimeout(() => {
+  if(customElements.get('card-tools')) return;
+  customElements.define('krisinfo-card', class extends HTMLElement{
+    setConfig() { throw new Error("Can't find card-tools. See https://github.com/thomasloven/lovelace-card-tools");}
+  });
+}, 2000);
