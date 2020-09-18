@@ -5,7 +5,6 @@ The red alert icon will appear only if the message is an alert.
 <img src="https://github.com/isabellaalstrom/krisinfo-card/blob/master/krisinfo.png" alt="Krisinformation Lovelace Card" />
 
 ## Installation
-This card requires [card-tools](https://github.com/thomasloven/lovelace-card-tools) to be installed.
 
 For installation instructions [see this guide](https://github.com/thomasloven/hass-config/wiki/Lovelace-Plugins).
 
