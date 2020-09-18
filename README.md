@@ -15,7 +15,7 @@ For installation instructions [see this guide](https://github.com/thomasloven/ha
 title: My awesome Lovelace!
 resources:
   - url: /local/krisinfo-card.js
-    type: js
+    type: module
 views:
   title: My view
   cards:
