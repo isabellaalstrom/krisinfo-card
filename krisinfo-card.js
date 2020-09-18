@@ -27,15 +27,15 @@ class KrisinfoCard extends LitElement {
       `
     return html
     `
-      ${this._renderStyle()}
       ${this.config.only_alerts == false || this.config.only_alerts == null
         ? html
         `<ha-card>
-          <div class="header">
+          <div class="card-header">
             <div class="name">
               ${this.header}
             </div>
           </div>
+          <div class="card-content">
           ${this.messages.length == 0
             ? html`<p>Inga meddelanden just nu</p>`
             : this.messages.map(message => 
@@ -47,6 +47,7 @@ class KrisinfoCard extends LitElement {
                       <a target="_blank" href="${message.Web}">Läs mer</a>
                     </div>
               `)}
+              </div>
           </ha-card>`
         : // if only alerts
         html
@@ -55,11 +56,12 @@ class KrisinfoCard extends LitElement {
           html
           `
             <ha-card>
-              <div class="header">
+              <div class="card-header">
                 <div class="name">
                   ${this.state} - ${this.header}
                 </div>
               </div>
+              <div class="card-content">
               ${this.messages.length == 0
                 ? html`<p>Inga meddelanden just nu</p>`
                 : this.messages.map(message => 
@@ -76,7 +78,7 @@ class KrisinfoCard extends LitElement {
                   : ''}`
                   )
               
-                }
+                }</div>
             </ha-card>
           `
           : ''
@@ -86,13 +88,9 @@ class KrisinfoCard extends LitElement {
     `;
   }    
 
-  _renderStyle() {
+  static get styles() {
       return css
       `
-        <style>
-          ha-card {
-            padding: 16px;
-          }
           .header {
             padding: 0;
             @apply --paper-font-headline;
@@ -123,7 +121,6 @@ class KrisinfoCard extends LitElement {
             color: red;
             padding-right: 7px;
           }
-        </style>
       `;
     }
   
